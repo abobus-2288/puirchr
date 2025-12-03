@@ -178,24 +178,24 @@ export default function EditTestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
             href="/admin/tests"
-            className="inline-flex items-center text-sm text-gray-400 hover:text-gray-300"
+            className="inline-flex items-center text-sm text-gray-600"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Tests
           </Link>
-          <h1 className="mt-2 text-3xl font-bold text-white">Edit Psychological Test</h1>
-          <p className="mt-2 text-sm text-gray-300">
+          <h1 className="mt-2 text-3xl font-bold text-gray-900">Edit Psychological Test</h1>
+          <p className="mt-2 text-sm text-gray-600">
             Update the test configuration and scoring logic.
           </p>
         </div>
 
-        <div className="bg-gray-800 shadow rounded-lg">
+        <div className="bg-white">
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-8">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
               <Select
@@ -254,7 +254,7 @@ export default function EditTestPage() {
 
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-white">Questions</h3>
+                <h3 className="text-lg font-medium text-gray-900">Questions</h3>
                 <Button
                   type="button"
                   variant="outline"
@@ -268,9 +268,9 @@ export default function EditTestPage() {
 
               <div className="space-y-6">
                 {fields.map((field, questionIndex) => (
-                  <div key={field.id} className="border border-gray-600 rounded-lg p-4">
+                  <div key={field.id} className="border border-gray-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-sm font-medium text-white">
+                      <h4 className="text-sm font-medium text-gray-900">
                         Question {questionIndex + 1}
                       </h4>
                       {fields.length > 1 && (
@@ -296,11 +296,11 @@ export default function EditTestPage() {
                         error={errors.questions?.[questionIndex]?.text?.message}
                       />
 
-                      <div className="bg-gray-700 p-3 rounded-lg">
-                        <p className="text-sm text-gray-300">
+                      <div className="bg-gray-100">
+                        <p className="text-sm text-gray-600">
                           This question will use a 5-point Likert scale:
                         </p>
-                        <ul className="text-xs text-gray-400 mt-2 space-y-1">
+                        <ul className="text-xs text-gray-500">
                           <li>1 - Strongly Disagree</li>
                           <li>2 - Disagree</li>
                           <li>3 - Neutral/Partly Agree</li>

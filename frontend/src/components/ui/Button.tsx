@@ -11,10 +11,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none';
     
     const variants = {
-      primary: 'bg-white text-black hover:bg-gray-200',
-      secondary: 'bg-gray-800 text-white hover:bg-gray-700',
+      primary: 'bg-blue-600 text-white hover:bg-blue-700',
+      secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300',
       danger: 'bg-red-600 text-white hover:bg-red-700',
-      outline: 'border border-gray-600 bg-transparent hover:bg-gray-800 text-white',
+      outline: 'border border-gray-300 bg-transparent hover:bg-gray-50 text-gray-900',
     };
     
     const sizes = {

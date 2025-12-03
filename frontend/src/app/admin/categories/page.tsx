@@ -76,13 +76,13 @@ export default function CategoriesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
-            <h1 className="text-3xl font-bold text-white">Categories</h1>
-            <p className="mt-2 text-sm text-gray-300">
+            <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
+            <p className="mt-2 text-sm text-gray-600">
               Manage test categories to organize your tests better.
             </p>
           </div>
@@ -99,8 +99,8 @@ export default function CategoriesPage() {
         {categories.length === 0 ? (
           <div className="text-center py-12">
             <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-white">No categories</h3>
-            <p className="mt-1 text-sm text-gray-400">
+            <h3 className="mt-2 text-sm font-medium text-gray-900">No categories</h3>
+            <p className="mt-1 text-sm text-gray-600">
               Get started by creating a new category.
             </p>
             <div className="mt-6">
@@ -114,20 +114,20 @@ export default function CategoriesPage() {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <div className="overflow-hidden shadow ring-1 ring-gray-700 ring-opacity-5 md:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-700">
-                      <thead className="bg-gray-800">
+                  <div className="overflow-hidden shadow ring-1 ring-gray-200">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700">
                             Name
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700">
                             Description
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700">
                             Tests
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700">
                             Created
                           </th>
                           <th className="relative px-6 py-3">
@@ -135,19 +135,19 @@ export default function CategoriesPage() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-900 divide-y divide-gray-700">
+                      <tbody className="bg-white">
                         {categories.map((category) => (
-                          <tr key={category.id} className="hover:bg-gray-800">
-                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">
+                          <tr key={category.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                               {category.name}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-400 max-w-xs truncate">
+                            <td className="px-6 py-4 text-sm text-gray-600">
                               {category.description || 'No description'}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {category.tests_count || 0}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {formatDate(category.created_at)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

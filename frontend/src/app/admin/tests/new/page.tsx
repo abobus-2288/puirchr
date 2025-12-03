@@ -138,24 +138,24 @@ export default function NewTestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       
       <div className="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
             href="/admin/tests"
-            className="inline-flex items-center text-sm text-gray-400 hover:text-gray-300"
+            className="inline-flex items-center text-sm text-gray-600"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Назад к тестам
           </Link>
-          <h1 className="mt-2 text-3xl font-bold text-white">Создать новый тест</h1>
-          <p className="mt-2 text-sm text-gray-300">
+          <h1 className="mt-2 text-3xl font-bold text-gray-900">Создать новый тест</h1>
+          <p className="mt-2 text-sm text-gray-600">
             Создайте новый тест с выбранным типом вопросов.
           </p>
         </div>
 
-        <div className="bg-gray-800 shadow rounded-lg">
+        <div className="bg-white">
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-8">
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
               <Select
@@ -171,7 +171,7 @@ export default function NewTestPage() {
               />
 
               <div>
-                <label className="block text-sm font-medium text-white mb-2">
+                <label className="block text-sm font-medium text-gray-900">
                   Тип теста
                 </label>
                 <div className="space-y-2">
@@ -187,7 +187,7 @@ export default function NewTestPage() {
                         onChange={() => handleTestTypeChange(type.value as TestType)}
                         className="mr-2"
                       />
-                      <span className="text-sm text-gray-300">{type.label}</span>
+                      <span className="text-sm text-gray-600">{type.label}</span>
                     </label>
                   ))}
                 </div>
@@ -237,7 +237,7 @@ export default function NewTestPage() {
 
             <div>
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-medium text-white">Вопросы</h3>
+                <h3 className="text-lg font-medium text-gray-900">Вопросы</h3>
                 <Button
                   type="button"
                   variant="outline"
@@ -251,9 +251,9 @@ export default function NewTestPage() {
 
               <div className="space-y-6">
                 {fields.map((field, questionIndex) => (
-                  <div key={field.id} className="border border-gray-600 rounded-lg p-4">
+                  <div key={field.id} className="border border-gray-300">
                     <div className="flex items-center justify-between mb-4">
-                      <h4 className="text-sm font-medium text-white">
+                      <h4 className="text-sm font-medium text-gray-900">
                         Вопрос {questionIndex + 1}
                       </h4>
                       {fields.length > 1 && (

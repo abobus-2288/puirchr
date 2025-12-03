@@ -60,24 +60,24 @@ export default function NewCategoryPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       
       <div className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <Link
             href="/admin/categories"
-            className="inline-flex items-center text-sm text-gray-400 hover:text-gray-300"
+            className="inline-flex items-center text-sm text-gray-600"
           >
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Categories
           </Link>
-          <h1 className="mt-2 text-3xl font-bold text-white">Create New Category</h1>
-          <p className="mt-2 text-sm text-gray-300">
+          <h1 className="mt-2 text-3xl font-bold text-gray-900">Create New Category</h1>
+          <p className="mt-2 text-sm text-gray-600">
             Add a new category to organize your tests.
           </p>
         </div>
 
-        <div className="bg-gray-800 shadow rounded-lg">
+        <div className="bg-white">
           <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-6">
             <Input
               label="Category Name"

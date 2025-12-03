@@ -1,0 +1,113 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: puirchr_postgres_prod
+    env_file:
+      - ./backend/.env
+    environment:
+      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata_prod:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER:-postgres}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: puirchr_redis_prod
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:-}"]
+    volumes:
+      - redisdata_prod:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    container_name: puirchr_backend_prod
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    env_file:
+      - ./backend/.env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      DB_HOST: postgres
+      REDIS_HOST: redis
+    volumes:
+      - backend_storage_prod:/var/www/html/storage
+      - backend_bootstrap_cache_prod:/var/www/html/bootstrap/cache
+    ports:
+      - "8000:80"
+    restart: unless-stopped
+    networks:
+      - app-network
+    # Run migrations and optimize Laravel on startup
+    entrypoint: >
+      sh -c "
+      php artisan config:cache &&
+      php artisan route:cache &&
+      php artisan view:cache &&
+      php artisan migrate --force &&
+      exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+      "
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+    container_name: puirchr_frontend_prod
+    depends_on:
+      - backend
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://localhost:8000/api}
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - app-network
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 512M
+
+volumes:
+  pgdata_prod:
+    driver: local
+  redisdata_prod:
+    driver: local
+  backend_storage_prod:
+    driver: local
+  backend_bootstrap_cache_prod:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge
+

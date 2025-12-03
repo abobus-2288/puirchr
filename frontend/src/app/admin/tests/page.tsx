@@ -54,11 +54,11 @@ export default function AdminTestsPage() {
 
   if (!isAuthenticated || !isAdmin) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-gray-100">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white">Доступ запрещён</h1>
-            <p className="mt-4 text-lg text-gray-400">
+            <h1 className="text-3xl font-bold text-gray-900">Доступ запрещён</h1>
+            <p className="mt-4 text-lg text-gray-600">
               Вам необходимы права администратора для доступа к этой странице.
             </p>
           </div>
@@ -69,23 +69,23 @@ export default function AdminTestsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-gray-100">
         <Loading />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       
       <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div className="mb-6 sm:mb-0">
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
                 Управление тестами
               </h1>
-              <p className="text-gray-400">
+              <p className="text-gray-600">
                 Создавайте, редактируйте и управляйте тестами.
               </p>
             </div>
@@ -102,9 +102,9 @@ export default function AdminTestsPage() {
 
         {tests.length === 0 ? (
           <div className="text-center py-12">
-            <BookOpen className="mx-auto h-12 w-12 text-gray-400" />
-            <h3 className="mt-2 text-sm font-medium text-white">Нет тестов</h3>
-            <p className="mt-1 text-sm text-gray-400">
+            <BookOpen className="mx-auto h-12 w-12 text-gray-600" />
+            <h3 className="mt-2 text-sm font-medium text-gray-900">Нет тестов</h3>
+            <p className="mt-1 text-sm text-gray-600">
               Начните с создания нового теста.
             </p>
             <div className="mt-6">
@@ -118,23 +118,23 @@ export default function AdminTestsPage() {
             <div className="mt-8 flow-root">
               <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                  <div className="overflow-hidden shadow ring-1 ring-gray-700 ring-opacity-5 md:rounded-lg">
-                    <table className="min-w-full divide-y divide-gray-700">
-                      <thead className="bg-gray-800">
+                  <div className="overflow-hidden shadow ring-1 ring-gray-200 ring-opacity-5 md:rounded-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                      <thead className="bg-gray-200">
                         <tr>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wide">
                             Название
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wide">
                             Категория
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wide">
                             Вопросы
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wide">
                             Время
                           </th>
-                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wide">
+                          <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wide">
                             Создан
                           </th>
                           <th className="relative px-6 py-3">
@@ -142,15 +142,15 @@ export default function AdminTestsPage() {
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="bg-gray-900 divide-y divide-gray-700">
+                      <tbody className="bg-white divide-y divide-gray-200">
                         {tests.map((test) => (
-                          <tr key={test.id} className="hover:bg-gray-800">
+                          <tr key={test.id} className="hover:bg-gray-100">
                             <td className="px-6 py-4">
-                              <div className="text-sm font-medium text-white">
+                              <div className="text-sm font-medium text-gray-900">
                                 {test.title}
                               </div>
                               {test.description && (
-                                <div className="text-sm text-gray-400 max-w-xs truncate">
+                                <div className="text-sm text-gray-600 max-w-xs truncate">
                                   {test.description}
                                 </div>
                               )}
@@ -161,23 +161,23 @@ export default function AdminTestsPage() {
                                   {test.category.name}
                                 </span>
                               ) : (
-                                <span className="text-gray-400">Без категории</span>
+                                <span className="text-gray-600">Без категории</span>
                               )}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {test.questions.length}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {test.time_limit_minutes ? (
                                 <div className="flex items-center">
                                   <Clock className="h-4 w-4 mr-1" />
                                   {test.time_limit_minutes} мин
                                 </div>
                               ) : (
-                                <span className="text-gray-400">Без ограничений</span>
+                                <span className="text-gray-600">Без ограничений</span>
                               )}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                               {formatDate(test.created_at)}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

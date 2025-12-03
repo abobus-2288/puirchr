@@ -21,7 +21,7 @@ export default function LikertAnswerInput({
 }: LikertAnswerInputProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-white">
+      <h2 className="text-2xl font-semibold text-gray-900">
         {questionText}
       </h2>
 
@@ -30,10 +30,10 @@ export default function LikertAnswerInput({
           <button
             key={option.value}
             onClick={() => onChange(option.value)}
-            className={`w-full p-4 rounded-lg text-left transition-colors ${
+            className={`w-full p-4 rounded-lg text-left transition-colors border-2 ${
               value === option.value
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                ? `${option.color} text-white border-transparent`
+                : 'bg-white border-gray-300 text-gray-900 hover:border-gray-400 hover:bg-gray-50'
             }`}
           >
             <div className="flex items-center justify-between">
@@ -41,7 +41,7 @@ export default function LikertAnswerInput({
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                   value === option.value
                     ? 'bg-white/20 text-white'
-                    : 'bg-gray-600 text-gray-400'
+                    : 'bg-gray-200 text-gray-700'
                 }`}>
                   {option.value}
                 </div>

@@ -170,25 +170,25 @@ export default function TakeTestPage() {
   const isLastQuestion = currentQuestion === test.questions.length - 1;
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Link
             href={`/tests/${test.id}`}
-            className="inline-flex items-center text-sm text-gray-400 hover:text-white"
+            className="inline-flex items-center text-sm text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Назад к тесту
           </Link>
         </div>
 
-        <div className="bg-gray-800 border border-gray-700 rounded-lg">
+        <div className="bg-white border border-gray-200 rounded-lg shadow-sm">
           {/* Header */}
-          <div className="px-6 py-4 border-b border-gray-700">
+          <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-xl font-bold text-white">{test.title}</h1>
-                <div className="flex items-center space-x-4 text-sm text-gray-400 mt-1">
+                <h1 className="text-xl font-bold text-gray-900">{test.title}</h1>
+                <div className="flex items-center space-x-4 text-sm text-gray-600 mt-1">
                   <span>Вопрос {currentQuestion + 1} из {test.questions.length}</span>
                   {test.time_limit_minutes && (
                     <span>{test.time_limit_minutes} мин</span>
@@ -196,14 +196,14 @@ export default function TakeTestPage() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm text-gray-400">Прогресс</p>
-                <p className="text-lg font-bold text-white">{answeredCount}/{test.questions.length}</p>
+                <p className="text-sm text-gray-600">Прогресс</p>
+                <p className="text-lg font-bold text-gray-900">{answeredCount}/{test.questions.length}</p>
               </div>
             </div>
 
             {/* Progress Bar */}
             <div className="mt-4">
-              <div className="bg-gray-700 rounded-full h-2">
+              <div className="bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${progress}%` }}
@@ -234,7 +234,7 @@ export default function TakeTestPage() {
             </div>
 
             {/* Navigation */}
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center mt-8">
               <Button
                 variant="outline"
                 onClick={handlePrevious}

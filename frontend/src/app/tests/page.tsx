@@ -64,22 +64,22 @@ export default function TestsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-white mb-4">
+          <h1 className="text-3xl font-bold text-gray-900">
             Тесты
           </h1>
-          <p className="text-gray-400">
+          <p className="text-gray-600">
             Выберите тест для прохождения
           </p>
         </div>
 
         {tests.length === 0 ? (
           <div className="text-center py-20">
-            <BookOpen className="mx-auto h-16 w-16 text-gray-400 mb-6" />
-            <h3 className="text-xl font-bold text-white mb-4">Нет доступных тестов</h3>
-            <p className="text-gray-400">
+            <BookOpen className="mx-auto h-16 w-16 text-gray-400" />
+            <h3 className="text-xl font-bold text-gray-900">Нет доступных тестов</h3>
+            <p className="text-gray-600">
               В данный момент нет доступных тестов.
             </p>
           </div>
@@ -87,36 +87,50 @@ export default function TestsPage() {
           <>
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {tests.map((test) => (
-                <div key={test.id} className="bg-gray-800 border border-gray-700 rounded-lg p-6">
-                  <div className="mb-4">
-                    <h3 className="text-xl font-bold text-white mb-2">
-                      {test.title}
-                    </h3>
-                    {test.category?.name && (
-                      <span className="inline-block px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
-                        {test.category.name}
-                      </span>
+                <div 
+                  key={test.id} 
+                  className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden flex flex-col"
+                >
+                  <div className="p-6 flex-1 flex flex-col">
+                    <div className="mb-4">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                        {test.title}
+                      </h3>
+                      {test.category?.name && (
+                        <span className="inline-block px-2.5 py-1 bg-blue-100 text-blue-800 text-xs font-medium rounded-full">
+                          {test.category.name}
+                        </span>
+                      )}
+                    </div>
+                    
+                    {test.description && (
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+                        {test.description}
+                      </p>
                     )}
-                  </div>
-                  
-                  {test.description && (
-                    <p className="text-gray-400 mb-4 text-sm">
-                      {test.description}
-                    </p>
-                  )}
 
-                  <div className="flex items-center justify-between text-sm text-gray-400 mb-4">
-                    <span>{test.questions.length} вопросов</span>
-                    {test.time_limit_minutes && (
-                      <span>{test.time_limit_minutes} мин</span>
-                    )}
-                  </div>
+                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                      <div className="flex items-center space-x-4">
+                        <span className="flex items-center">
+                          <BookOpen className="h-4 w-4 mr-1" />
+                          {test.questions.length} вопросов
+                        </span>
+                        {test.time_limit_minutes && (
+                          <span className="flex items-center">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {test.time_limit_minutes} мин
+                          </span>
+                        )}
+                      </div>
+                    </div>
 
-                  <Link href={`/tests/${test.id}`}>
-                    <Button className="w-full">
-                      Начать тест
-                    </Button>
-                  </Link>
+                    <Link href={`/tests/${test.id}`} className="mt-auto">
+                      <Button className="w-full flex items-center justify-center">
+                        Начать тест
+                        <ArrowRight className="h-4 w-4 ml-2" />
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               ))}
             </div>

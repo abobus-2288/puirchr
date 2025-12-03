@@ -1,234 +1,240 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { RotateCcw, RotateCw } from 'lucide-react';
-import * as THREE from 'three';
 
 interface TestResultCubeProps {
   numericResult: number;
   maxScore: number;
   textDescription: string;
   category?: string;
+  testDescription?: string;
 }
 
 export default function TestResultCube({ 
   numericResult, 
   maxScore, 
   textDescription, 
-  category 
+  category,
+  testDescription
 }: TestResultCubeProps) {
-  const mountRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<THREE.Scene>();
-  const cameraRef = useRef<THREE.PerspectiveCamera>();
-  const rendererRef = useRef<THREE.WebGLRenderer>();
-  const cubeGroupRef = useRef<THREE.Group>();
-  const animationIdRef = useRef<number>();
-  const materialsRef = useRef<THREE.MeshBasicMaterial[]>([]);
-  const isDraggingRef = useRef(false);
-  const lastMouseXRef = useRef(0);
-  const lastMouseYRef = useRef(0);
+  const cubeRef = useRef<HTMLDivElement>(null);
+  const [rotationX, setRotationX] = useState(0);
+  const [rotationY, setRotationY] = useState(0);
+  const [scale, setScale] = useState(1);
+  const isDragging = useRef(false);
+  const isAutoRotating = useRef(true);
+  const lastMouseX = useRef(0);
+  const lastMouseY = useRef(0);
+  const autoRotateSpeed = useRef({ x: 0.2, y: 0.3 });
 
   const percentage = Math.round((numericResult / maxScore) * 100);
 
-  // Initialize Three.js scene once
+  // Auto-rotation effect
   useEffect(() => {
-    if (!mountRef.current) return;
-
-    const width = mountRef.current.clientWidth || 256;
-    const height = mountRef.current.clientHeight || 256;
-
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    const camera = new THREE.PerspectiveCamera(70, width / height, 0.1, 1000);
-    camera.position.z = 5;
-    cameraRef.current = camera;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(width, height);
-    renderer.setClearAlpha(0);
-    rendererRef.current = renderer;
-
-    // Ensure empty mount before appending
-    mountRef.current.innerHTML = '';
-    mountRef.current.appendChild(renderer.domElement);
-
-    const cubeGroup = new THREE.Group();
-    cubeGroupRef.current = cubeGroup;
-
-    // Materials per face (transparent, color tint)
-    const faceMaterials: THREE.MeshBasicMaterial[] = [
-      new THREE.MeshBasicMaterial({ color: 0x2563eb, transparent: true }),
-      new THREE.MeshBasicMaterial({ color: 0x16a34a, transparent: true }),
-      new THREE.MeshBasicMaterial({ color: 0x9333ea, transparent: true }),
-      new THREE.MeshBasicMaterial({ color: 0xea580c, transparent: true }),
-      new THREE.MeshBasicMaterial({ color: 0xdc2626, transparent: true }),
-      new THREE.MeshBasicMaterial({ color: 0x6b7280, transparent: true }),
-    ];
-    materialsRef.current = faceMaterials;
-
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
-    const cube = new THREE.Mesh(geometry, faceMaterials);
-    cubeGroup.add(cube);
-
-    // Lights
-    const ambient = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambient);
-    const dir = new THREE.DirectionalLight(0xffffff, 0.6);
-    dir.position.set(3, 4, 5);
-    scene.add(dir);
-
-    scene.add(cubeGroup);
-
-    // Mouse controls using refs to avoid rerenders
-    const handleMouseDown = (event: MouseEvent) => {
-      isDraggingRef.current = true;
-      lastMouseXRef.current = event.clientX;
-      lastMouseYRef.current = event.clientY;
-    };
-
-    const handleMouseMove = (event: MouseEvent) => {
-      if (!isDraggingRef.current || !cubeGroupRef.current) return;
-      const deltaX = event.clientX - lastMouseXRef.current;
-      const deltaY = event.clientY - lastMouseYRef.current;
-      cubeGroupRef.current.rotation.y += deltaX * 0.01;
-      cubeGroupRef.current.rotation.x += deltaY * 0.01;
-      lastMouseXRef.current = event.clientX;
-      lastMouseYRef.current = event.clientY;
-    };
-
-    const handleMouseUp = () => {
-      isDraggingRef.current = false;
-    };
-
-    const handleWheel = (event: WheelEvent) => {
-      if (!cameraRef.current) return;
-      event.preventDefault();
-      cameraRef.current.position.z += event.deltaY * 0.01;
-      cameraRef.current.position.z = Math.max(3, Math.min(10, cameraRef.current.position.z));
-    };
-
-    renderer.domElement.addEventListener('mousedown', handleMouseDown);
-    renderer.domElement.addEventListener('mousemove', handleMouseMove);
-    renderer.domElement.addEventListener('mouseup', handleMouseUp);
-    renderer.domElement.addEventListener('mouseleave', handleMouseUp);
-    renderer.domElement.addEventListener('wheel', handleWheel, { passive: false });
-
-    const animate = () => {
-      animationIdRef.current = requestAnimationFrame(animate);
-      if (!isDraggingRef.current && cubeGroupRef.current) {
-        cubeGroupRef.current.rotation.y += 0.005;
-        cubeGroupRef.current.rotation.x += 0.002;
+    const interval = setInterval(() => {
+      if (!isDragging.current && isAutoRotating.current) {
+        setRotationX(prev => prev + autoRotateSpeed.current.x);
+        setRotationY(prev => prev + autoRotateSpeed.current.y);
       }
-      renderer.render(scene, camera);
-    };
-    animate();
+    }, 50);
 
-    const handleResize = () => {
-      if (!mountRef.current || !cameraRef.current || !rendererRef.current) return;
-      const w = mountRef.current.clientWidth || 256;
-      const h = mountRef.current.clientHeight || 256;
-      cameraRef.current.aspect = w / h;
-      cameraRef.current.updateProjectionMatrix();
-      rendererRef.current.setSize(w, h);
-      rendererRef.current.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    };
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      if (animationIdRef.current) cancelAnimationFrame(animationIdRef.current);
-      window.removeEventListener('resize', handleResize);
-      renderer.domElement.removeEventListener('mousedown', handleMouseDown);
-      renderer.domElement.removeEventListener('mousemove', handleMouseMove);
-      renderer.domElement.removeEventListener('mouseup', handleMouseUp);
-      renderer.domElement.removeEventListener('mouseleave', handleMouseUp);
-      renderer.domElement.removeEventListener('wheel', handleWheel as any);
-      if (mountRef.current?.contains(renderer.domElement)) {
-        mountRef.current.removeChild(renderer.domElement);
-      }
-      renderer.dispose();
-      geometry.dispose();
-      faceMaterials.forEach(m => {
-        if (m.map) m.map.dispose();
-        m.dispose();
-      });
-    };
+    return () => clearInterval(interval);
   }, []);
 
-  // Update face textures when content changes (no re-init)
-  useEffect(() => {
-    const createTextTexture = (
-      text: string,
-      fontSize: number = 64,
-      color: string = '#ffffff'
-    ) => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const size = 1024; // higher resolution for crisp text
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d')!;
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      ctx.scale(dpr, dpr);
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    isDragging.current = true;
+    isAutoRotating.current = false;
+    lastMouseX.current = e.clientX;
+    lastMouseY.current = e.clientY;
 
-      // Transparent background (no black fill)
-      ctx.clearRect(0, 0, size, size);
-      ctx.fillStyle = color;
-      ctx.font = `bold ${fontSize}px Arial`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isDragging.current) return;
+      const deltaX = e.clientX - lastMouseX.current;
+      const deltaY = e.clientY - lastMouseY.current;
+      setRotationY(prev => prev + deltaX * 0.5);
+      setRotationX(prev => prev - deltaY * 0.5);
+      lastMouseX.current = e.clientX;
+      lastMouseY.current = e.clientY;
+  };
 
-      const lines = text.split('\n');
-      const lineHeight = fontSize * 1.25;
-      const startY = (size - (lines.length - 1) * lineHeight) / 2;
-      lines.forEach((line, idx) => {
-        ctx.fillText(line, size / 2, startY + idx * lineHeight);
-      });
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.needsUpdate = true;
-      return texture;
+  const handleMouseUp = () => {
+      isDragging.current = false;
+      isAutoRotating.current = true;
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
 
-    const mats = materialsRef.current;
-    if (!mats || mats.length !== 6) return;
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+  };
 
-    mats[0].map = createTextTexture(`${numericResult}\nиз ${maxScore}\n${percentage}%`, 64);
-    mats[1].map = createTextTexture(`${category || 'Результат'}\n\n${textDescription}`, 40);
-    mats[2].map = createTextTexture('Тест завершен\n\nПоздравляем!', 56);
-    mats[3].map = createTextTexture('Анализ\n\nВаш стиль лидерства', 52);
-    mats[4].map = createTextTexture('Результаты\n\nДетальная информация', 48);
-    mats[5].map = createTextTexture('Информация\n\nО тесте', 48);
-    mats.forEach(m => (m.needsUpdate = true));
-  }, [numericResult, maxScore, percentage, textDescription, category]);
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      e.preventDefault();
+      isDragging.current = true;
+      isAutoRotating.current = false;
+      lastMouseX.current = e.touches[0].clientX;
+      lastMouseY.current = e.touches[0].clientY;
 
-  const handleReset = () => {
-    if (cubeGroupRef.current) {
-      cubeGroupRef.current.rotation.x = 0;
-      cubeGroupRef.current.rotation.y = 0;
+      const handleTouchMove = (e: TouchEvent) => {
+        if (!isDragging.current || e.touches.length !== 1) return;
+        e.preventDefault();
+        const deltaX = e.touches[0].clientX - lastMouseX.current;
+        const deltaY = e.touches[0].clientY - lastMouseY.current;
+        setRotationY(prev => prev + deltaX * 0.5);
+        setRotationX(prev => prev - deltaY * 0.5);
+        lastMouseX.current = e.touches[0].clientX;
+        lastMouseY.current = e.touches[0].clientY;
+      };
+
+      const handleTouchEnd = () => {
+        isDragging.current = false;
+        isAutoRotating.current = true;
+        window.removeEventListener('touchmove', handleTouchMove);
+        window.removeEventListener('touchend', handleTouchEnd);
+      };
+
+      window.addEventListener('touchmove', handleTouchMove, { passive: false });
+      window.addEventListener('touchend', handleTouchEnd);
     }
   };
 
+  const handleWheel = (e: React.WheelEvent) => {
+    e.preventDefault();
+    setScale(prev => Math.max(0.5, Math.min(1.5, prev - e.deltaY * 0.001)));
+  };
+
+  const handleReset = () => {
+    setRotationX(0);
+    setRotationY(0);
+    setScale(1);
+    isAutoRotating.current = true;
+  };
+
   const handleRotateLeft = () => {
-    if (cubeGroupRef.current) cubeGroupRef.current.rotation.y -= Math.PI / 2;
+    setRotationY(prev => prev - 90);
+    isAutoRotating.current = false;
+    setTimeout(() => {
+      isAutoRotating.current = true;
+    }, 2000);
   };
 
   const handleRotateRight = () => {
-    if (cubeGroupRef.current) cubeGroupRef.current.rotation.y += Math.PI / 2;
+    setRotationY(prev => prev + 90);
+    isAutoRotating.current = false;
+    setTimeout(() => {
+      isAutoRotating.current = true;
+    }, 2000);
   };
+
+  const faces = [
+    {
+      id: 'front',
+      text: `${numericResult}\nиз ${maxScore}\n${percentage}%`,
+      className: 'bg-white border-2 border-gray-300 shadow-md',
+      textSize: 'text-2xl',
+    },
+    {
+      id: 'back',
+      text: `${category || 'Результат'}\n\n${textDescription}`,
+      className: 'bg-white border-2 border-gray-300 shadow-md',
+      textSize: 'text-base',
+    },
+    {
+      id: 'right',
+      text: 'Тест завершен\n\nПоздравляем!',
+      className: 'bg-gray-50 border-2 border-gray-300 shadow-sm',
+      textSize: 'text-lg',
+    },
+    {
+      id: 'left',
+      text: 'Анализ\n\nВаш стиль лидерства',
+      className: 'bg-gray-50 border-2 border-gray-300 shadow-sm',
+      textSize: 'text-lg',
+    },
+    {
+      id: 'top',
+      text: `О тесте\n\n${testDescription || 'Информация о тесте'}`,
+      className: 'bg-white border-2 border-gray-300 shadow-md',
+      textSize: 'text-sm',
+    },
+    {
+      id: 'bottom',
+      text: 'Информация\n\nО тесте',
+      className: 'bg-gray-50 border-2 border-gray-300 shadow-sm',
+      textSize: 'text-base',
+    },
+  ];
 
   return (
     <div className="flex flex-col items-center space-y-6">
       <div
-        ref={mountRef}
-        className="w-64 h-64 cursor-grab active:cursor-grabbing"
-        style={{ touchAction: 'none' }}
-      />
+        className="w-[450px] h-[450px] relative flex items-center justify-center"
+        style={{
+          perspective: '1000px',
+          perspectiveOrigin: '50% 50%',
+        }}
+      >
+        <div
+          ref={cubeRef}
+          className="relative"
+          style={{
+            width: '300px',
+            height: '300px',
+            transformStyle: 'preserve-3d',
+            transform: `rotateX(${rotationX}deg) rotateY(${rotationY}deg) scale(${scale})`,
+            transition: isDragging.current ? 'none' : 'none',
+          }}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
+          onWheel={handleWheel}
+        >
+          {faces.map((face, index) => {
+            const transforms: Record<string, string> = {
+              front: 'translateZ(150px)',
+              back: 'translateZ(-150px) rotateY(180deg)',
+              right: 'translateX(150px) rotateY(90deg)',
+              left: 'translateX(-150px) rotateY(-90deg)',
+              top: 'translateY(-150px) rotateX(90deg)',
+              bottom: 'translateY(150px) rotateX(-90deg)',
+            };
+
+            return (
+              <div
+                key={face.id}
+                className={`absolute w-[300px] h-[300px] ${face.className} flex items-center justify-center text-center p-6 cursor-grab active:cursor-grabbing rounded-sm`}
+                style={{
+                  transform: transforms[face.id],
+                  backfaceVisibility: 'hidden',
+                  WebkitBackfaceVisibility: 'hidden',
+                }}
+              >
+                <div className={`text-gray-900 whitespace-pre-line ${face.textSize}`}>
+                  {face.text.split('\n').map((line, i) => (
+                    <div
+                      key={i}
+                      className={`${
+                        i === 0 ? 'font-bold mb-2' : 
+                        i === 1 && face.text.split('\n').length > 2 ? 'font-semibold mb-1' : 
+                        'font-normal'
+                      }`}
+                    >
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="flex space-x-4">
         <button
           onClick={handleRotateLeft}
-          className="p-3 bg-gray-700 hover:bg-gray-600 rounded-full text-white transition-colors"
+          className="p-3 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-900 transition-colors"
           title="Повернуть влево"
         >
           <RotateCcw className="h-5 w-5" />
@@ -243,14 +249,14 @@ export default function TestResultCube({
         
         <button
           onClick={handleRotateRight}
-          className="p-3 bg-gray-700 hover:bg-gray-600 rounded-full text-white transition-colors"
+          className="p-3 bg-gray-200 hover:bg-gray-300 rounded-full text-gray-900 transition-colors"
           title="Повернуть вправо"
         >
           <RotateCw className="h-5 w-5" />
         </button>
       </div>
 
-      <div className="text-center text-gray-400 text-sm">
+      <div className="text-center text-gray-600 text-sm">
         <p>Перетащите куб мышью или используйте кнопки для поворота</p>
         <p className="mt-1">Колесико мыши для масштабирования</p>
       </div>

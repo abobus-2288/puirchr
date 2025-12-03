@@ -40,11 +40,11 @@ export default function TestPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white">Войдите для просмотра тестов</h1>
-            <p className="mt-4 text-lg text-gray-400">
+            <h1 className="text-3xl font-bold text-gray-900">Войдите для просмотра тестов</h1>
+            <p className="mt-4 text-lg text-gray-600">
               Необходимо войти в систему для доступа к тестам.
             </p>
             <div className="mt-8">
@@ -60,7 +60,7 @@ export default function TestPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-white">
         <Loading />
       </div>
     );
@@ -68,11 +68,11 @@ export default function TestPage() {
 
   if (!test) {
     return (
-      <div className="min-h-screen bg-gray-900">
+      <div className="min-h-screen bg-white">
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white">Тест не найден</h1>
-            <p className="mt-4 text-lg text-gray-400">
+            <h1 className="text-3xl font-bold text-gray-900">Тест не найден</h1>
+            <p className="mt-4 text-lg text-gray-600">
               Запрашиваемый тест не существует.
             </p>
             <div className="mt-8">
@@ -87,51 +87,51 @@ export default function TestPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-gray-50">
 
       <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="mb-6">
           <Link
             href="/tests"
-            className="inline-flex items-center text-sm text-gray-400 hover:text-white"
+            className="inline-flex items-center text-sm text-gray-600"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Назад к тестам
           </Link>
         </div>
 
-        <div className="bg-gray-800 border border-gray-700 rounded-lg p-8">
+        <div className="bg-white border border-gray-200 rounded-lg shadow p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold text-white mb-2">{test.title}</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{test.title}</h1>
             {test.category && (
-              <span className="inline-block px-3 py-1 bg-blue-500/20 text-blue-400 text-sm rounded">
+              <span className="inline-block px-3 py-1 bg-blue-100 text-blue-800">
                 {test.category.name}
               </span>
             )}
           </div>
 
           {test.description && (
-            <p className="text-gray-300 mb-6">
+            <p className="text-gray-600">
               {test.description}
             </p>
           )}
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div>
-              <p className="text-sm text-gray-400">Вопросы</p>
-              <p className="text-lg font-semibold text-white">{test.questions.length}</p>
+              <p className="text-sm text-gray-600">Вопросы</p>
+              <p className="text-lg font-semibold text-gray-900">{test.questions.length}</p>
             </div>
 
             {test.time_limit_minutes && (
               <div>
-                <p className="text-sm text-gray-400">Время</p>
-                <p className="text-lg font-semibold text-white">{test.time_limit_minutes} мин</p>
+                <p className="text-sm text-gray-600">Время</p>
+                <p className="text-lg font-semibold text-gray-900">{test.time_limit_minutes} мин</p>
               </div>
             )}
 
             <div>
-              <p className="text-sm text-gray-400">Создан</p>
-              <p className="text-lg font-semibold text-white">{formatDate(test.created_at)}</p>
+              <p className="text-sm text-gray-600">Создан</p>
+              <p className="text-lg font-semibold text-gray-900">{formatDate(test.created_at)}</p>
             </div>
           </div>
 

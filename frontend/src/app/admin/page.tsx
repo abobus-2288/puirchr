@@ -67,18 +67,18 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-white">
       
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
-          <p className="mt-2 text-sm text-gray-300">
+          <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+          <p className="mt-2 text-sm text-gray-600">
             Welcome to the TestHub admin panel. Manage your tests and categories from here.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -86,22 +86,22 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-400 truncate">Total Tests</dt>
-                    <dd className="text-lg font-medium text-white">{stats.totalTests}</dd>
+                    <dt className="text-sm font-medium text-gray-500">Total Tests</dt>
+                    <dd className="text-lg font-medium text-gray-900">{stats.totalTests}</dd>
                   </dl>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 px-5 py-3">
+            <div className="bg-gray-50">
               <div className="text-sm">
-                <Link href="/admin/tests" className="font-medium text-white hover:text-gray-300">
+                <Link href="/admin/tests" className="font-medium text-blue-600 hover:text-blue-500">
                   View all tests
                 </Link>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -109,22 +109,22 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-400 truncate">Categories</dt>
-                    <dd className="text-lg font-medium text-white">{stats.totalCategories}</dd>
+                    <dt className="text-sm font-medium text-gray-500">Categories</dt>
+                    <dd className="text-lg font-medium text-gray-900">{stats.totalCategories}</dd>
                   </dl>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 px-5 py-3">
+            <div className="bg-gray-50">
               <div className="text-sm">
-                <Link href="/admin/categories" className="font-medium text-white hover:text-gray-300">
+                <Link href="/admin/categories" className="font-medium text-blue-600 hover:text-blue-500">
                   Manage categories
                 </Link>
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -132,20 +132,20 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-400 truncate">Users</dt>
-                    <dd className="text-lg font-medium text-white">-</dd>
+                    <dt className="text-sm font-medium text-gray-500">Users</dt>
+                    <dd className="text-lg font-medium text-gray-900">-</dd>
                   </dl>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 px-5 py-3">
-              <div className="text-sm text-gray-400">
+            <div className="bg-gray-50">
+              <div className="text-sm text-gray-600">
                 Coming soon
               </div>
             </div>
           </div>
 
-          <div className="bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="bg-white">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
@@ -153,14 +153,14 @@ export default function AdminDashboard() {
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-400 truncate">Active Tests</dt>
-                    <dd className="text-lg font-medium text-white">-</dd>
+                    <dt className="text-sm font-medium text-gray-500">Active Tests</dt>
+                    <dd className="text-lg font-medium text-gray-900">-</dd>
                   </dl>
                 </div>
               </div>
             </div>
-            <div className="bg-gray-700 px-5 py-3">
-              <div className="text-sm text-gray-400">
+            <div className="bg-gray-50">
+              <div className="text-sm text-gray-600">
                 Coming soon
               </div>
             </div>
@@ -168,29 +168,29 @@ export default function AdminDashboard() {
         </div>
 
         <div className="mt-8">
-          <div className="bg-gray-800 shadow rounded-lg">
-            <div className="px-6 py-4 border-b border-gray-700">
-              <h3 className="text-lg font-medium text-white">Recent Tests</h3>
+          <div className="bg-white">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h3 className="text-lg font-medium text-gray-900">Recent Tests</h3>
             </div>
-            <div className="divide-y divide-gray-700">
+            <div className="divide-y divide-gray-200">
               {stats.recentTests.length === 0 ? (
-                <div className="px-6 py-4 text-center text-gray-400">
+                <div className="px-6 py-4 text-center text-gray-600">
                   No tests created yet
                 </div>
               ) : (
                 stats.recentTests.map((test) => (
-                  <div key={test.id} className="px-6 py-4 hover:bg-gray-700">
+                  <div key={test.id} className="px-6 py-4 hover:bg-gray-50">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
-                        <h4 className="text-sm font-medium text-white">{test.title}</h4>
-                        <p className="text-sm text-gray-400">
+                        <h4 className="text-sm font-medium text-gray-900">{test.title}</h4>
+                        <p className="text-sm text-gray-600">
                           {test.questions.length} questions
                           {test.time_limit_minutes && ` • ${test.time_limit_minutes} min`}
                         </p>
                       </div>
                       <div className="flex items-center space-x-2">
                         {test.category && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white text-black">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                             {test.category.name}
                           </span>
                         )}
