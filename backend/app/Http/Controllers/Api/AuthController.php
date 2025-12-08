@@ -25,7 +25,7 @@ class AuthController extends Controller
         ]);
 
         // Always assign basic user role on registration
-        $user->assignRole('admin');
+        $user->assignRole('user');
 
         $token = $user->createToken('api')->plainTextToken;
 
