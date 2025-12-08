@@ -82,6 +82,9 @@ RUN composer dump-autoload --optimize \
 # Copy nginx configuration
 COPY docker/nginx.conf /etc/nginx/http.d/default.conf
 
+# Create supervisor log directory
+RUN mkdir -p /var/log/supervisor /var/run
+
 # Copy supervisor configuration
 COPY docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
